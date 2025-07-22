@@ -91,15 +91,7 @@ export class ProductListComponent implements OnInit {
 
   // --- MÉTODO DE LOGOUT ADICIONADO ---
   logout(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Falha no logout', err);
-        // Mesmo em caso de erro no backend, redireciona o usuário
-        this.router.navigate(['/login']);
-      }
-    });
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

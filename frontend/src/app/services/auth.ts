@@ -9,29 +9,30 @@ import { environment } from '../../environments/environment';
 })
 export class Auth {
   private apiUrl = `${environment.apiUrl}/auth`;
-  private isLoggedIn = false;
+  private readonly TOKEN_KEY = 'auth_token';
 
   constructor(private http: HttpClient) {}
 
-  // O método de login recebe as credenciais e faz a chamada HTTP
   login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
-      // O tap "espia" a resposta de sucesso para atualizar o estado
-      tap(() => this.setAuthenticated(true))
+    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+      tap(response => {
+        if (response && response.token) {
+          localStorage.setItem(this.TOKEN_KEY, response.token);
+        }
+      })
     );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => this.setAuthenticated(false))
-    );
+  logout(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   isAuthenticated(): boolean {
-    return this.isLoggedIn;
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    return !!token; // Retorna true se o token existir
   }
 
-  setAuthenticated(status: boolean) {
-    this.isLoggedIn = status;
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 }

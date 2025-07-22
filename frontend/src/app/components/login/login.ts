@@ -26,21 +26,19 @@ export class LoginComponent {
     });
   }
 
+  // ...
   onSubmit(): void {
-    if (this.loginForm.invalid) {
-      return; // Sai se o formulário for inválido
-    }
+    if (this.loginForm.invalid) { return; }
     
-    // A lógica da chamada HTTP fica no serviço, mantendo o componente limpo
     this.authService.login(this.loginForm.value).subscribe({
       next: () => {
         console.log('Login bem-sucedido, redirecionando...');
         this.router.navigate(['/products']);
       },
       error: (err) => {
-        console.error('Erro no login', err);
-        this.errorMessage = err.error?.message || 'Credenciais inválidas. Tente novamente.';
+        this.errorMessage = err.error?.message || 'Credenciais inválidas.';
       }
     });
   }
+// ...
 }

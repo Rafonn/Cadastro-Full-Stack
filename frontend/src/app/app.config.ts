@@ -1,13 +1,14 @@
-import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http'; // Importe 'withInterceptors'
 import { routes } from './app.routes';
+import { authInterceptor } from './interceptors/auth-interceptor'; // Importe seu interceptador
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    { provide: 'ngZone', useValue: 'noop' },
-    importProvidersFrom(HttpClientModule)
+    provideHttpClient(
+      withInterceptors([authInterceptor]) // Registre o interceptador aqui
+    )
   ]
 };
