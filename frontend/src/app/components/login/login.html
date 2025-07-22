@@ -1,1 +1,26 @@
-<p>login works!</p>
+<div class="login-container">
+  <h2>Login</h2>
+  <!-- Conecta o formulário ao FormGroup no arquivo .ts -->
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="username">Usuário</label>
+      <!-- Conecta o input ao controle 'username' -->
+      <input id="username" type="text" formControlName="username">
+    </div>
+    <div class="form-group">
+      <label for="password">Senha</label>
+      <!-- Conecta o input ao controle 'password' -->
+      <input id="password" type="password" formControlName="password">
+    </div>
+    
+    <!-- O botão é desabilitado se o formulário for inválido -->
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+
+    <!-- Usando a sintaxe @if, que não precisa de importações -->
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+  </form>
+</div>

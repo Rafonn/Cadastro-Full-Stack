@@ -9,6 +9,7 @@ from app.models.product import db
 from app.controllers.auth_controller import auth_bp
 from app.controllers.product_controller import product_bp
 
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -16,14 +17,14 @@ def create_app(config_class=Config):
     # Inicializa extensões
     db.init_app(app)
     Migrate(app, db)
-    CORS(app, supports_credentials=True) # Habilita CORS para o frontend
+    CORS(app, origins="http://localhost:4200", supports_credentials=True)
 
     # Configura a fila com Redis [cite: 5]
-    app.redis = Redis.from_url(app.config['REDIS_URL'])
-    app.queue = rq.Queue('tech-solutio-tasks', connection=app.redis)
+    app.redis = Redis.from_url(app.config["REDIS_URL"])
+    app.queue = rq.Queue("tech-solutio-tasks", connection=app.redis)
 
     # Registra os Blueprints
-    app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(product_bp, url_prefix='/api')
-    
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(product_bp, url_prefix="/api")
+
     return app

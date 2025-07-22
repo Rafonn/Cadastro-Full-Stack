@@ -1,1 +1,35 @@
-<p>product-list works!</p>
+<div class="product-list-container">
+  <h2>Products</h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <input type="text" formControlName="name" placeholder="Name">
+    <input type="text" formControlName="brand" placeholder="Brand">
+    <input type="number" formControlName="value" placeholder="Value">
+    <button type="submit">{{ editingProduct ? 'Update' : 'Create' }}</button>
+    <button type="button" (click)="resetForm()" *ngIf="editingProduct">Cancel</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Brand</th>
+        <th>Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.id }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.brand }}</td>
+        <td>{{ product.value }}</td>
+        <td>
+          <button (click)="editProduct(product)">Edit</button>
+          <button (click)="deleteProduct(product.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
