@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Auth } from '../../services/auth'; // Verifique se o nome do arquivo é auth.service.ts
+import { Auth } from '../../services/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule] // Não precisa do HttpClientModule aqui
+  imports: [ReactiveFormsModule, CommonModule]
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -21,25 +21,20 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      username: ['admin', Validators.required], // Pode pré-preencher para facilitar o teste
+      username: ['admin', Validators.required],
       password: ['password123', Validators.required]
     });
   }
 
-  // ...
   onSubmit(): void {
-  if (this.loginForm.invalid) return;
+    if (this.loginForm.invalid) return;
 
-  this.authService.login(this.loginForm.value).subscribe(response => {
-    const token = response.token;
-    localStorage.setItem('token', token);
+    this.authService.login(this.loginForm.value).subscribe(response => {
+      const token = response.token;
+      localStorage.setItem('token', token);
 
-    console.log('Token salvo:', token);
 
-    this.router.navigate(['/products']).then(success => {
-      console.log('Redirecionamento para /products:', success ? 'OK' : 'Falhou');
+      this.router.navigate(['/products'])
     });
-  });
-}
-  // ...
+  }
 }

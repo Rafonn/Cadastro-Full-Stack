@@ -11,10 +11,8 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
-  // 👉 Função auxiliar para obter headers com o token
   private getAuthHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
-    console.log(token)
     return new HttpHeaders({
       Authorization: `Bearer ${token}`
     });

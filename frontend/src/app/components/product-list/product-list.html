@@ -1,21 +1,27 @@
-<div class="product-list-container">
-  <h2>Products</h2>
+<div class="page-container">
+  <div class="product-header">
+    <header>
+      <h1>Gestão de Produtos</h1>
+      <button (click)="logout()" class="logout-button">Logout</button>
+    </header>
+
+  </div>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <input type="text" formControlName="name" placeholder="Name">
-    <input type="text" formControlName="brand" placeholder="Brand">
-    <input type="number" formControlName="value" placeholder="Value">
-    <button type="submit">{{ editingProduct ? 'Update' : 'Create' }}</button>
-    <button type="button" (click)="resetForm()" *ngIf="editingProduct">Cancel</button>
+    <input type="text" formControlName="name" placeholder="Nome">
+    <input type="text" formControlName="brand" placeholder="Marca">
+    <input type="number" formControlName="value" placeholder="Valor">
+    <button class="create-button" type="submit">{{ editingProduct ? 'Atualizar' : 'Criar' }}</button>
+    <button class="cancel-button" type="button" (click)="resetForm()" *ngIf="editingProduct">Cancelar</button>
   </form>
 
   <table>
     <thead>
       <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Brand</th>
-        <th>Value</th>
+        <th>Nome</th>
+        <th>Marca</th>
+        <th>Valor</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -26,8 +32,8 @@
         <td>{{ product.brand }}</td>
         <td>{{ product.value }}</td>
         <td>
-          <button (click)="editProduct(product)">Edit</button>
-          <button (click)="deleteProduct(product.id)">Delete</button>
+          <button class="edit-button" (click)="editProduct(product)">Editar</button>
+          <button class="delete-button" (click)="deleteProduct(product.id)">Deletar</button>
         </td>
       </tr>
     </tbody>

@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-// Importações adicionadas
-import { ProductService } from '../../services/product'; // Corrigido o nome do serviço
+import { ProductService } from '../../services/product';
 import { Auth } from '../../services/auth';
-import { ProductModel } from '../../models/productModel'; // Interface para tipagem
+import { ProductModel } from '../../models/productModel';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +15,6 @@ import { ProductModel } from '../../models/productModel'; // Interface para tipa
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class ProductListComponent implements OnInit {
-  // Propriedades com tipagem forte
   products: ProductModel[] = [];
   productForm: FormGroup;
   editingProduct: ProductModel | null = null;
@@ -25,10 +23,9 @@ export class ProductListComponent implements OnInit {
     private productService: ProductService,
     private fb: FormBuilder,
     private router: Router,
-    private authService: Auth // AuthService injetado
+    private authService: Auth
   ) {
     this.productForm = this.fb.group({
-      // O formulário de criação não precisa do campo 'id'
       name: ['', Validators.required],
       brand: ['', Validators.required],
       value: ['', [Validators.required, Validators.min(0.01)]]
@@ -47,17 +44,17 @@ export class ProductListComponent implements OnInit {
 
   onSubmit(): void {
     if (this.productForm.invalid) {
-      return; // Previne submissão se o formulário for inválido
+      return;
     }
 
     if (this.editingProduct) {
-      // Lógica de ATUALIZAÇÃO
+      // ATUALIZAÇÃO
       this.productService.updateProduct(this.editingProduct.id, this.productForm.value).subscribe(() => {
         this.loadProducts();
         this.resetForm();
       });
     } else {
-      // Lógica de CRIAÇÃO
+      // CRIAÇÃO
       this.productService.createProduct(this.productForm.value).subscribe(() => {
         this.loadProducts();
         this.resetForm();
@@ -65,7 +62,7 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  editProduct(product: ProductModel): void { // Tipagem forte no parâmetro
+  editProduct(product: ProductModel): void {
     this.editingProduct = product;
     // Preenche o formulário com os dados do produto para edição
     this.productForm.setValue({
@@ -89,9 +86,9 @@ export class ProductListComponent implements OnInit {
     this.productForm.reset();
   }
 
-  // --- MÉTODO DE LOGOUT ADICIONADO ---
   logout(): void {
     this.authService.logout();
-    this.router.navigate(['/login']);
+
+    this.router.navigate(['/login'])
   }
 }

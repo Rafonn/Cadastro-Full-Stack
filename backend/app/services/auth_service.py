@@ -1,17 +1,16 @@
 import jwt
 import datetime
+import os
 
-# !! APENAS PARA DEPURAÇÃO !!
-# Usando a chave diretamente no código para eliminar o Flask config como variável.
-HARDCODED_SECRET = "tech-solutio-secret-key-123"
+from dotenv import load_dotenv
 
-# Usuário e senha fictícios
+load_dotenv()
+
+HARDCODED_SECRET = os.getenv("SECRET_KEY")
 HARDCODED_USER = {"username": "admin", "password": "password123", "id": 1}
 
 
 def generate_token(user_id):
-    """Gera o Token de Autenticação usando a chave hardcoded."""
-    print(f"[GENERATE] Usando chave hardcoded: '{HARDCODED_SECRET}'")
     try:
         payload = {
             "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1),
@@ -24,8 +23,6 @@ def generate_token(user_id):
 
 
 def verify_token(token):
-    """Verifica o token usando a chave hardcoded."""
-    print(f"[VERIFY] Usando chave hardcoded: '{HARDCODED_SECRET}'")
     try:
         payload = jwt.decode(token, HARDCODED_SECRET, algorithms=["HS256"])
         return payload["sub"]

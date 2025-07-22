@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class Auth {
   private apiUrl = `${environment.apiUrl}/auth`;
-  private readonly TOKEN_KEY = 'auth_token';
+  private readonly TOKEN_KEY = 'token';
 
   constructor(private http: HttpClient) {}
 
@@ -17,8 +17,7 @@ export class Auth {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         if (response && response.token) {
-          localStorage.setItem('token', response.token);
-          console.log(response.token);
+          localStorage.setItem(this.TOKEN_KEY, response.token);
         }
       })
     );
@@ -30,7 +29,7 @@ export class Auth {
 
   isAuthenticated(): boolean {
     const token = localStorage.getItem(this.TOKEN_KEY);
-    return !!token; // Retorna true se o token existir
+    return !!token;
   }
 
   getToken(): string | null {

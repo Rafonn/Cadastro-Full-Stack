@@ -1,5 +1,5 @@
 from functools import wraps
-from flask import request, jsonify, current_app, g  # Importe current_app
+from flask import request, jsonify, g
 from app.services.auth_service import verify_token
 
 
@@ -9,17 +9,8 @@ def login_required(f):
         token = None
         auth_header = request.headers.get("Authorization")
 
-        print("--- Depurando @login_required ---")
-        print(f"Cabeçalho Authorization recebido: {auth_header}")
-
         if auth_header and auth_header.startswith("Bearer "):
             token = auth_header.split(" ")[1]
-
-        print(f"Token extraído: {token}")
-        print(
-            f"SECRET_KEY que será usada para verificar: {current_app.config.get('SECRET_KEY')}"
-        )
-        print("---------------------------------")
 
         if not token:
             return jsonify({"message": "Token não encontrado!"}), 401
