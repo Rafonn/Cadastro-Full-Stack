@@ -1,34 +1,46 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductModel } from '../models/productModel';
-import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = `${environment.apiUrl}/products`;
+  private apiUrl = 'http://127.0.0.1:5000/api/products';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Adicione a opção aqui
+  // 👉 Função auxiliar para obter headers com o token
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token)
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   getProducts(): Observable<ProductModel[]> {
-    return this.http.get<ProductModel[]>(this.apiUrl, { withCredentials: true });
+    return this.http.get<ProductModel[]>(this.apiUrl, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // E aqui
-  createProduct(ProductModel: Omit<ProductModel, 'id'>): Observable<ProductModel> {
-    return this.http.post<ProductModel>(this.apiUrl, ProductModel, { withCredentials: true });
+  createProduct(product: Partial<ProductModel>): Observable<any> {
+    return this.http.post(this.apiUrl, product, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // E aqui
-  updateProduct(id: number, ProductModel: Partial<ProductModel>): Observable<ProductModel> {
-    return this.http.put<ProductModel>(`${this.apiUrl}/${id}`, ProductModel, { withCredentials: true });
+  updateProduct(id: number, product: Partial<ProductModel>): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, product, {
+      headers: this.getAuthHeaders()
+    });
   }
 
-  // E finalmente aqui
   deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { withCredentials: true });
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders()
+    });
   }
 }

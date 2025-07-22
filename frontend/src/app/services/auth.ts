@@ -17,7 +17,8 @@ export class Auth {
     return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         if (response && response.token) {
-          localStorage.setItem(this.TOKEN_KEY, response.token);
+          localStorage.setItem('token', response.token);
+          console.log(response.token);
         }
       })
     );

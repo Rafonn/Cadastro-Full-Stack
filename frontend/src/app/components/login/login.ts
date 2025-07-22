@@ -28,17 +28,18 @@ export class LoginComponent {
 
   // ...
   onSubmit(): void {
-    if (this.loginForm.invalid) { return; }
-    
-    this.authService.login(this.loginForm.value).subscribe({
-      next: () => {
-        console.log('Login bem-sucedido, redirecionando...');
-        this.router.navigate(['/products']);
-      },
-      error: (err) => {
-        this.errorMessage = err.error?.message || 'Credenciais inválidas.';
-      }
+  if (this.loginForm.invalid) return;
+
+  this.authService.login(this.loginForm.value).subscribe(response => {
+    const token = response.token;
+    localStorage.setItem('token', token);
+
+    console.log('Token salvo:', token);
+
+    this.router.navigate(['/products']).then(success => {
+      console.log('Redirecionamento para /products:', success ? 'OK' : 'Falhou');
     });
-  }
-// ...
+  });
+}
+  // ...
 }
