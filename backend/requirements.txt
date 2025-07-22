@@ -7,3 +7,4 @@ rq
 python-dotenv
 Flask-Cors
 PyJWT
+gunicorn
