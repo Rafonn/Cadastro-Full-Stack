@@ -1,15 +1,13 @@
 html, body {
   height: 100%;
   margin: 0;
-  /* Cor de fundo da página inteira */
-  background-color: #121212; /* Um fundo escuro como na sua imagem */
+  background-color: #121212;
 }
 
-/* Transforma o body em um container flex para centralizar o conteúdo */
 body {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center;    /* Centraliza verticalmente */
+  justify-content: center;
+  align-items: center;
   font-family: sans-serif;
   background-color: aliceblue;
 }

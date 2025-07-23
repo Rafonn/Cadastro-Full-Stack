@@ -4,15 +4,37 @@
       <h1>Gestão de Produtos</h1>
       <button (click)="logout()" class="logout-button">Logout</button>
     </header>
-
   </div>
 
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-    <input type="text" formControlName="name" placeholder="Nome">
-    <input type="text" formControlName="brand" placeholder="Marca">
-    <input type="number" formControlName="value" placeholder="Valor">
-    <button class="create-button" type="submit">{{ editingProduct ? 'Atualizar' : 'Criar' }}</button>
-    <button class="cancel-button" type="button" (click)="resetForm()" *ngIf="editingProduct">Cancelar</button>
+    <div>
+      <input type="text" formControlName="name" placeholder="Nome">
+      @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+        <div class="error-message">O nome é obrigatório.</div>
+      }
+    </div>
+
+    <div>
+      <input type="text" formControlName="brand" placeholder="Marca">
+      @if (productForm.get('brand')?.invalid && productForm.get('brand')?.touched) {
+        <div class="error-message">A marca é obrigatória.</div>
+      }
+    </div>
+
+    <div>
+      <input type="number" formControlName="value" placeholder="Valor">
+      @if (productForm.get('value')?.invalid && productForm.get('value')?.touched) {
+        <div class="error-message">O valor é obrigatório e deve ser positivo.</div>
+      }
+    </div>
+    
+    <div>
+      <button class="create-button" type="submit" [disabled]="productForm.invalid">{{ editingProduct ? 'Atualizar' : 'Criar' }}</button>
+      
+      @if (editingProduct) {
+        <button class="cancel-button" type="button" (click)="resetForm()">Cancelar</button>
+      }
+    </div>
   </form>
 
   <table>
@@ -30,8 +52,7 @@
         <td>{{ product.id }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.brand }}</td>
-        <td>{{ product.value }}</td>
-        <td>
+        <td>{{ product.value | currency:'BRL' }}</td> <td class="actions-cell">
           <button class="edit-button" (click)="editProduct(product)">Editar</button>
           <button class="delete-button" (click)="deleteProduct(product.id)">Deletar</button>
         </td>

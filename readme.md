@@ -135,7 +135,7 @@ Se preferir rodar os serviços separadamente:
 
 ### Com Docker
 
-**IMPORTANTE: No diretório /backend/run.py comente ou exclua a linha ```app.run(debug=True)```** 
+**IMPORTANTE: No diretório /backend/run.py comente ou exclua a linha: ```app.run(debug=True)```** 
 
 Este comando irá construir as imagens e iniciar todos os contêineres de uma só vez.
 
